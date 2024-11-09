@@ -4,7 +4,7 @@ import com.example.signup.domain.model.UserEntity
 import javax.inject.Inject
 
 class GetCurrentUserUseCase @Inject constructor(private val userRepository: UserRepository) {
-    suspend operator fun invoke (): UserEntity {
+    suspend operator fun invoke () {
         return userRepository.getCurrentUser()
     }
 }

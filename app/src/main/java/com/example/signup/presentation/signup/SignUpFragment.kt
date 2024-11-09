@@ -14,6 +14,7 @@ import com.example.signup.UiState
 import com.example.signup.databinding.FragmentSignUpBinding
 import com.example.signup.presentation.home.HomeFragment
 import com.example.signup.presentation.model.UserModel
+import com.example.signup.presentation.phoneAuth.PhoneAuthFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -34,31 +35,25 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView()
-        initObserver()
+        observeSignUp()
     }
     private fun initView() {
         binding.btnSignUp.setOnClickListener {
             val email = binding.etEmail.text.toString()
             val password = binding.etPassword.text.toString()
-            val name = binding.etName.text.toString()
-            viewModel.signUp(
-                UserModel(
-                    userName = name,
-                    userEmail = email
-                ), password)
+            viewModel.signUp(email, password)
         }
 
     }
 
-    private fun initObserver() {
-        lifecycleScope.launch {
+    private fun observeSignUp() {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.signUpState.collect { state ->
                 when (state) {
                     is UiState.Loading -> {
                         //No action needed
                     }
                     is UiState.Success -> {
-                        Toast.makeText(requireActivity(), "회원가입 성공", Toast.LENGTH_SHORT).show()
                         parentFragmentManager
                             .beginTransaction()
                             .replace(R.id.frameLayout, HomeFragment())

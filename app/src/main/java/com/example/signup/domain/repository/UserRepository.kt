@@ -1,9 +1,13 @@
 package com.example.signup.domain.repository
 
-import com.example.signup.domain.model.UserEntity
+import com.example.signup.domain.model.SignInCredential
+import kotlinx.coroutines.flow.Flow
 
 interface UserRepository {
-    suspend fun getCurrentUser() : UserEntity
-    suspend fun signUp(userEntity: UserEntity, password: String) : UserEntity
-    suspend fun signIn(email: String, password: String): UserEntity
+    suspend fun getCurrentUser()
+    suspend fun signUp(email: String, password: String)
+    suspend fun signIn(email: String, password: String)
+    suspend fun signOut()
+    suspend fun withdrawalUser()
+    suspend fun signInWithCredential(credential: SignInCredential)
 }

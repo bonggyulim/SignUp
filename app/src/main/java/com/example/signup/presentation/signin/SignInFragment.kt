@@ -1,12 +1,14 @@
 package com.example.signup.presentation.signin
 
+import android.app.Activity
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.signup.R
@@ -14,8 +16,10 @@ import com.example.signup.UiState
 import com.example.signup.databinding.FragmentSignInBinding
 import com.example.signup.presentation.home.HomeFragment
 import com.example.signup.presentation.signup.SignUpFragment
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.GoogleAuthProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -33,9 +37,8 @@ class SignInFragment : Fragment() {
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initView()
-//        observeSignIn()
-//        observeCurrentUser()
+        initView()
+        observeSignIn()
     }
 
     private fun initView() {
@@ -44,17 +47,20 @@ class SignInFragment : Fragment() {
             val password = binding.etPassword.text.toString()
             viewModel.signIn(email, password)
         }
-        binding.btnSignUp.setOnClickListener {
+        binding.tvSignUp.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
                 .replace(R.id.frameLayout, SignUpFragment())
                 .addToBackStack(null)
                 .commit()
         }
+        binding.ivBackButton.setOnClickListener{
+            parentFragmentManager.popBackStack()
+        }
     }
 
     private fun observeSignIn() {
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             viewModel.signInState.collect { state ->
                 when (state) {
                     is UiState.Loading -> {
@@ -64,23 +70,6 @@ class SignInFragment : Fragment() {
                         Toast.makeText(requireActivity(), "로그인 성공", Toast.LENGTH_SHORT).show()
                         replaceFragment(HomeFragment())
                     }
-                    is UiState.Error -> {
-
-                    }
-                }
-            }
-        }
-    }
-
-    private fun observeCurrentUser() {
-        viewModel.getCurrentUser()
-        lifecycleScope.launch {
-            viewModel.currentUserState.collect { state ->
-                when (state) {
-                    is UiState.Loading -> {
-
-                    }
-                    is UiState.Success -> replaceFragment(HomeFragment())
                     is UiState.Error -> {
 
                     }

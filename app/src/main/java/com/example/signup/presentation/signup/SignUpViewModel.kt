@@ -19,15 +19,15 @@ import javax.inject.Inject
 class SignUpViewModel @Inject constructor(
     private val signUpUseCase: SignUpUseCase,
 ): ViewModel() {
-    private val _signUpState = MutableStateFlow<UiState<UserModel>>(UiState.Loading)
-    val signUpState: StateFlow<UiState<UserModel>> = _signUpState.asStateFlow()
+    private val _signUpState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val signUpState: StateFlow<UiState<Boolean>> = _signUpState.asStateFlow()
 
-    fun signUp(userModel: UserModel, password: String) {
+    fun signUp(email: String, password: String) {
         viewModelScope.launch {
             _signUpState.value = UiState.Loading
             try {
-                val userInfo = signUpUseCase(userModel.toUserEntity(), password)
-                _signUpState.value = UiState.Success(userInfo.toUserModel())
+                signUpUseCase(email, password)
+                _signUpState.value = UiState.Success(true)
             } catch (e: FirebaseAuthException) {
                 _signUpState.value = when (e.errorCode) {
                     "auth/email-already-in-use" -> UiState.Error("auth/email-already-in-use")

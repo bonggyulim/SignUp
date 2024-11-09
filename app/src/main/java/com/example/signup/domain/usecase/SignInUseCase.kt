@@ -5,7 +5,7 @@ import com.example.signup.domain.model.UserEntity
 import javax.inject.Inject
 
 class SignInUseCase @Inject constructor(private val userRepository: UserRepository) {
-    suspend operator fun invoke (email: String, password: String): UserEntity {
+    suspend operator fun invoke (email: String, password: String) {
         return userRepository.signIn(email, password)
     }
 }

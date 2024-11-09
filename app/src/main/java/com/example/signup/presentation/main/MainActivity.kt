@@ -7,7 +7,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.signup.R
 import com.example.signup.databinding.ActivityMainBinding
-import com.example.signup.presentation.signin.SignInFragment
+import com.example.signup.presentation.splash.SplashFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     private fun showFragment() {
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.frameLayout, SignInFragment())
+            .replace(R.id.frameLayout, SplashFragment())
             .commit()
     }
 
