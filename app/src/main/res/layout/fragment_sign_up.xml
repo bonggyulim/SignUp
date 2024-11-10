@@ -53,6 +53,17 @@
         app:layout_constraintTop_toBottomOf="@+id/tvEmail" />
 
     <TextView
+        android:id="@+id/tvEmailRegex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp"
+        android:textColor="@color/red"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etEmail" />
+
+    <TextView
         android:id="@+id/tvPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -69,21 +80,45 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:textSize="16sp"
+        android:inputType="textPassword"
         android:hint="비밀번호를 입력해 주세요."
         android:background="@drawable/bg_white_radius"
         app:layout_constraintStart_toStartOf="@+id/tvPassword"
         app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
 
     <TextView
+        android:id="@+id/tvPasswordRegex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/red"
+        android:textSize="12sp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+
+
+    <TextView
         android:id="@+id/tvPassword2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="40dp"
         android:text="비밀번호 확인"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+
+    <TextView
+        android:id="@+id/tvPasswordRegex2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/red"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etPassword2" />
 
     <EditText
         android:id="@+id/etPassword2"
@@ -92,6 +127,7 @@
         android:layout_margin="10dp"
         android:background="@drawable/bg_white_radius"
         android:hint="비밀번호를 한 번 더 입력해 주세요."
+        android:inputType="textPassword"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="@+id/tvPassword"
         app:layout_constraintTop_toBottomOf="@+id/tvPassword2" />
@@ -103,9 +139,10 @@
         android:layout_marginStart="10dp"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/bg_primary_radius"
-        android:text="다음"
+        android:background="@drawable/bg_enable_radius"
+        android:text="가입 완료"
         android:textColor="@color/white"
+        android:enabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

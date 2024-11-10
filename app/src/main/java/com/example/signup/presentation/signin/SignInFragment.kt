@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -14,7 +15,12 @@ import androidx.lifecycle.lifecycleScope
 import com.example.signup.R
 import com.example.signup.UiState
 import com.example.signup.databinding.FragmentSignInBinding
+import com.example.signup.presentation.addValidationTextWatcher
+import com.example.signup.presentation.addValidationTextWatcher2
+import com.example.signup.presentation.addValidationTextWatcher3
 import com.example.signup.presentation.home.HomeFragment
+import com.example.signup.presentation.isValidEmail
+import com.example.signup.presentation.isValidPassword
 import com.example.signup.presentation.signup.SignUpFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -28,6 +34,8 @@ class SignInFragment : Fragment() {
     private var _binding: FragmentSignInBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SignInViewModel by viewModels()
+    private val validMap = mutableMapOf<EditText, Boolean>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,6 +47,7 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initView()
         observeSignIn()
+        setUpTextWatcher()
     }
 
     private fun initView() {
@@ -57,6 +66,18 @@ class SignInFragment : Fragment() {
         binding.ivBackButton.setOnClickListener{
             parentFragmentManager.popBackStack()
         }
+
+    }
+
+    private fun setUpTextWatcher() {
+        binding.etEmail.addValidationTextWatcher3(
+            validMap,
+            binding.btnSignIn
+        )
+        binding.etPassword.addValidationTextWatcher3(
+            validMap,
+            binding.btnSignIn
+        )
     }
 
     private fun observeSignIn() {
@@ -71,7 +92,7 @@ class SignInFragment : Fragment() {
                         replaceFragment(HomeFragment())
                     }
                     is UiState.Error -> {
-
+                        Toast.makeText(requireActivity(), "로그인 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
             }

@@ -7,23 +7,37 @@
     android:layout_height="match_parent"
     tools:context=".presentation.home.HomeFragment">
 
+    <TextView
+        android:id="@+id/tvLogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="BonggyuLim"
+        android:textColor="@color/primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvSignOut"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="144dp"
+        android:layout_marginTop="660dp"
+        android:layout_marginEnd="44dp"
+        android:textColor="@color/red"
         android:text="로그아웃"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/tvWithdrawal"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvWithdrawal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="104dp"
+        android:layout_marginEnd="40dp"
+        android:textColor="@color/red"
         android:text="회원탈퇴"
-        app:layout_constraintStart_toEndOf="@+id/tvSignOut"
+        app:layout_constraintBottom_toBottomOf="@+id/tvSignOut"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvSignOut" />
 </androidx.constraintlayout.widget.ConstraintLayout>

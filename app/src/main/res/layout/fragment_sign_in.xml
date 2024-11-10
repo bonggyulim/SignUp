@@ -73,6 +73,7 @@
         android:layout_margin="10dp"
         android:textSize="16sp"
         android:hint="비밀번호를 입력해 주세요."
+        android:inputType="textPassword"
         android:background="@drawable/bg_white_radius"
         app:layout_constraintStart_toStartOf="@+id/tvPassword"
         app:layout_constraintTop_toBottomOf="@+id/tvPassword" />
@@ -84,9 +85,10 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="10dp"
-        android:background="@drawable/bg_primary_radius"
+        android:background="@drawable/bg_enable_radius"
         android:text="로그인"
         android:textColor="@color/white"
+        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
@@ -99,16 +101,6 @@
         android:text="회원가입하기"
         android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="@+id/btnSignIn"
-        app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
-
-    <TextView
-        android:id="@+id/tvForGotUser"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:textSize="12sp"
-        android:text="계정정보를 잊으셨나요?"
-        app:layout_constraintStart_toStartOf="@+id/btnSignIn"
         app:layout_constraintTop_toBottomOf="@+id/btnSignIn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

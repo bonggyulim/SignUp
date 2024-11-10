@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.signup.R
 import com.example.signup.UiState
 import com.example.signup.databinding.FragmentSignInBinding
@@ -79,15 +81,20 @@ class SplashFragment : Fragment() {
 
     private fun observeCurrentUser() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.currentUserState.collect { state ->
-                when (state) {
-                    is UiState.Loading -> {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.currentUserState.collect { state ->
+                    when (state) {
+                        is UiState.Loading -> {
 
-                    }
-                    is UiState.Success ->
-                        replaceFragment(HomeFragment(), false)
-                    is UiState.Error -> {
+                        }
 
+                        is UiState.Success ->{
+                            Toast.makeText(requireContext(), "구글 로그인 성공", Toast.LENGTH_SHORT).show()
+                            replaceFragment(HomeFragment(), false)
+                        }
+                        is UiState.Error -> {
+
+                        }
                     }
                 }
             }

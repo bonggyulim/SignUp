@@ -13,13 +13,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.PhoneAuthOptions
+import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
+import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
+import java.util.Timer
+import java.util.TimerTask
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class UserRepositoryImpl @Inject constructor(
     private val auth: FirebaseAuth,
@@ -65,13 +72,22 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun withdrawalUser() {
+    override suspend fun withdrawalUser(): Flow<Boolean> = callbackFlow {
         try {
             auth.currentUser?.delete()
+                ?.addOnCompleteListener  { task ->
+                    if (task.isSuccessful) {
+                        trySend(true)
+                    } else {
+                        trySend(false)
+                    }
+                }
+            awaitClose()
         } catch (e: Exception) {
             throw e
         }
     }
+
 
     override suspend fun signInWithCredential(credential: SignInCredential) {
         try {

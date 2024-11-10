@@ -63,9 +63,10 @@ class HomeFragment : Fragment() {
                     }
                     is UiState.Success -> {
                         replaceFragment(SplashFragment())
+                        Toast.makeText(requireActivity(), "로그아웃 성공", Toast.LENGTH_SHORT).show()
                     }
                     is UiState.Error -> {
-
+                        Toast.makeText(requireActivity(), "로그아웃 실패", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -80,9 +81,11 @@ class HomeFragment : Fragment() {
 
                     }
                     is UiState.Success -> {
+                        Toast.makeText(requireActivity(), "회원 탈퇴 성공", Toast.LENGTH_SHORT).show()
                         replaceFragment(SplashFragment())
                     }
                     is UiState.Error -> {
+                        Toast.makeText(requireActivity(), "회원 탈퇴 실패", Toast.LENGTH_SHORT).show()
 
                     }
                 }

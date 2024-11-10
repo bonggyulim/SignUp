@@ -8,6 +8,6 @@ interface UserRepository {
     suspend fun signUp(email: String, password: String)
     suspend fun signIn(email: String, password: String)
     suspend fun signOut()
-    suspend fun withdrawalUser()
+    suspend fun withdrawalUser(): Flow<Boolean>
     suspend fun signInWithCredential(credential: SignInCredential)
 }

@@ -9,6 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -36,14 +37,20 @@ class HomeViewModel @Inject constructor(
     }
 
     fun withdraw() {
+        _withdrawalState.value = UiState.Loading
+
         viewModelScope.launch {
-            _withdrawalState.value = UiState.Loading
-            try {
-                withdrawalUseCase()
-                _withdrawalState.value = UiState.Success(true)
-            } catch (e: Exception) {
-                _withdrawalState.value = UiState.Error(e.message ?: "error")
-            }
+            withdrawalUseCase()
+                .catch { e ->
+                    _withdrawalState.value = UiState.Error(e.message ?: "Unknown error")
+                }
+                .collect { isSuccess ->
+                    _withdrawalState.value = if (isSuccess) {
+                        UiState.Success(true)
+                    } else {
+                        UiState.Error("회원 탈퇴 실패")
+                    }
+                }
         }
     }
 }

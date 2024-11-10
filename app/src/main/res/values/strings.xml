@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">SignUp</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="email_regex_error">이메일 형식이 올바르지 않습니다.</string>
+    <string name="password_error">비밀번호가 일치하지 않습니다.</string>
+    <string name="password_regex_error">8–20자의 영문과 숫자를 함께 사용해야합니다.</string>
+    <string name="num_size_eleven">전화번호를 정확히 입력 해주세요.</string>
+    <string name="num_size_six">6자리 숫자 인증코드를 입력 해주세요.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
