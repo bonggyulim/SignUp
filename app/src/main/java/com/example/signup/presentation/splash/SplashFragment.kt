@@ -14,13 +14,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.example.signup.R
 import com.example.signup.UiState
-import com.example.signup.databinding.FragmentSignInBinding
 import com.example.signup.databinding.FragmentSplashBinding
 import com.example.signup.presentation.home.HomeFragment
 import com.example.signup.presentation.phoneAuth.PhoneAuthFragment
 import com.example.signup.presentation.signin.SignInFragment
-import com.example.signup.presentation.signin.SignInViewModel
-import com.example.signup.presentation.signup.SignUpFragment
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import dagger.hilt.android.AndroidEntryPoint
@@ -43,6 +40,7 @@ class SplashFragment : Fragment() {
         initView()
         observeSignIn()
         observeCurrentUser()
+
     }
 
     private fun initView() {
@@ -128,12 +126,24 @@ class SplashFragment : Fragment() {
         if (add) {
             parentFragmentManager
                 .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
                 .replace(R.id.frameLayout, fragment)
                 .addToBackStack(null)
                 .commit()
         } else {
             parentFragmentManager
                 .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_up,
+                    R.anim.slide_out_up,
+                    R.anim.slide_in_down,
+                    R.anim.slide_out_down
+                )
                 .replace(R.id.frameLayout, fragment)
                 .commit()
         }

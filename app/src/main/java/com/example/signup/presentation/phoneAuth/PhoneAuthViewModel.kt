@@ -30,6 +30,8 @@ class PhoneAuthViewModel @Inject constructor(
                 val codeSent = repository.requestPhoneAuth(phoneNumber)
                 if (codeSent) {
                     _phoneAuthState.value = UiState.Success(true)
+                } else {
+                    _phoneAuthState.value = UiState.Error("Unknown Error")
                 }
             } catch (e: FirebaseException) {
                 _phoneAuthState.value = UiState.Error(e.message ?: "error")

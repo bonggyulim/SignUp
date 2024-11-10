@@ -64,13 +64,13 @@ class PhoneAuthRepositoryImpl @Inject constructor(
                 auth.signInWithCredential(credential)
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
-                            continuation.resume(true) // 인증 성공
+                            continuation.resume(true)
                         } else {
-                            continuation.resume(false) // 인증 실패
+                            continuation.resume(false)
                         }
                     }
             } else {
-                continuation.resume(false) // 저장된 verificationId가 없으면 실패 처리
+                continuation.resume(false)
             }
         }
     }

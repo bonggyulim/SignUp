@@ -90,6 +90,12 @@ class SignUpFragment : Fragment() {
                     is UiState.Success -> {
                         parentFragmentManager
                             .beginTransaction()
+                            .setCustomAnimations(
+                                R.anim.slide_in_up,
+                                R.anim.slide_out_up,
+                                R.anim.slide_in_down,
+                                R.anim.slide_out_down
+                            )
                             .replace(R.id.frameLayout, HomeFragment())
                             .commit()
 

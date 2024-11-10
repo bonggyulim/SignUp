@@ -59,6 +59,12 @@ class SignInFragment : Fragment() {
         binding.tvSignUp.setOnClickListener {
             parentFragmentManager
                 .beginTransaction()
+                .setCustomAnimations(
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_left,
+                    R.anim.slide_out_right
+                )
                 .replace(R.id.frameLayout, SignUpFragment())
                 .addToBackStack(null)
                 .commit()
@@ -102,6 +108,12 @@ class SignInFragment : Fragment() {
     private fun replaceFragment(fragment: Fragment) {
         parentFragmentManager
             .beginTransaction()
+            .setCustomAnimations(
+                R.anim.slide_in_up,
+                R.anim.slide_out_up,
+                R.anim.slide_in_down,
+                R.anim.slide_out_down
+            )
             .replace(R.id.frameLayout, fragment)
             .commit()
     }

@@ -48,7 +48,8 @@
         android:layout_margin="10dp"
         android:background="@drawable/bg_white_radius"
         android:textSize="16sp"
-        android:maxLength="11"
+        android:maxLength="13"
+        android:inputType="phone"
         android:hint="테스트번호 : 16505551234"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,6 +75,7 @@
         android:textSize="10sp"
         android:textColor="@color/white"
         android:enabled="false"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/bg_enable_radius"
         app:layout_constraintBottom_toBottomOf="@+id/etPhoneNumber"
         app:layout_constraintEnd_toEndOf="@+id/etPhoneNumber"
@@ -87,6 +89,7 @@
         android:layout_marginStart="20dp"
         android:text="인증번호"
         android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPhoneNumber" />
 
@@ -100,6 +103,8 @@
         android:maxLength="6"
         android:textSize="16sp"
         android:enabled="false"
+        android:inputType="number"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCode" />

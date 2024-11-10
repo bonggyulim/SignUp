@@ -1,6 +1,8 @@
 package com.example.signup.presentation.phoneAuth
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.replace
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.transition.Visibility
 import com.example.signup.R
 import com.example.signup.UiState
 import com.example.signup.databinding.FragmentPhoneAuthBinding
@@ -28,9 +31,6 @@ import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PhoneAuthFragment : Fragment() {
-    private var email: String? = null
-    private var password: String? = null
-
     private var _binding: FragmentPhoneAuthBinding? = null
     private val binding get() = _binding!!
     private val viewModel: PhoneAuthViewModel by viewModels()
@@ -54,7 +54,8 @@ class PhoneAuthFragment : Fragment() {
 
     private fun initView() {
         binding.btnSendCode.setOnClickListener {
-            val num = binding.etPhoneNumber.text.toString()
+            val phoneNum = binding.etPhoneNumber.text.toString()
+            val num = phoneNum.filterNot { it.code == 45 }
             viewModel.requestPhoneAuth("+$num")
         }
 
@@ -73,7 +74,7 @@ class PhoneAuthFragment : Fragment() {
 
     private fun setUpTextWatcher() {
         binding.etPhoneNumber.addValidationTextWatcher4(
-            11,
+            13,
             getString(R.string.num_size_eleven),
             validMap,
             binding.btnSendCode,
@@ -86,7 +87,37 @@ class PhoneAuthFragment : Fragment() {
             binding.btnVerifyCode,
             binding.tvCodeRegex
         )
+
+        binding.etPhoneNumber.addTextChangedListener(object : TextWatcher {
+            private var isUpdating = false
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+            override fun afterTextChanged(s: Editable?) {
+                if (isUpdating) return
+                s?.let {
+                    val formatted = formatTextWithHyphens(it.toString())
+                    isUpdating = true
+                    binding.etPhoneNumber.setText(formatted)
+                    binding.etPhoneNumber.setSelection(formatted.length)
+                    isUpdating = false
+                }
+            }
+        })
+
+
     }
+    private fun formatTextWithHyphens(input: String): String {
+        val digitsOnly = input.filter { it.isDigit() }
+        val sb = StringBuilder()
+
+        for (i in digitsOnly.indices) {
+            if (i == 3 || i == 7) sb.append('-')
+            sb.append(digitsOnly[i])
+        }
+
+        return sb.toString()
+    }
+
 
     private fun observePhoneAuth() {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -98,16 +129,19 @@ class PhoneAuthFragment : Fragment() {
 
                     is UiState.Success -> {
                         // 폰번호인증성공
-                        Toast.makeText(requireActivity(), "인증번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireActivity(), "인증번호를 확인 해주세요.", Toast.LENGTH_SHORT).show()
                         binding.etPhoneNumber.isEnabled = false
                         binding.btnSendCode.isEnabled = false
                         binding.btnSendCode.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_enable_radius)
                         binding.etCode.isEnabled = true
                         binding.etCode.setText("")
+                        binding.etCode.visibility = View.VISIBLE
+                        binding.tvCode.visibility = View.VISIBLE
                     }
 
                     is UiState.Error -> {
                         // 폰번호인증실패
+                        Toast.makeText(requireActivity(), "테스트 번호로 진행 해주세요", Toast.LENGTH_SHORT).show()
                         Log.d("PhoneAuth", "failed")
                     }
 
@@ -129,15 +163,22 @@ class PhoneAuthFragment : Fragment() {
                         Log.d("Auth", "success")
                         parentFragmentManager
                             .beginTransaction()
+                            .setCustomAnimations(
+                                R.anim.slide_in_up,
+                                R.anim.slide_out_up,
+                                R.anim.slide_in_down,
+                                R.anim.slide_out_down
+                            )
                             .replace(R.id.frameLayout, HomeFragment())
                             .commit()
                         Toast.makeText(requireActivity(), "회원가입 성공", Toast.LENGTH_SHORT).show()
                     }
 
                     is UiState.Error -> {
+                        Toast.makeText(requireActivity(), "인증 실패", Toast.LENGTH_SHORT).show()
                         binding.etPhoneNumber.isEnabled = true
                         binding.etCode.isEnabled = false
-                        binding.btnSendCode.text = "재인증."
+                        binding.btnSendCode.text = "재인증"
                         binding.btnSendCode.isEnabled = true
                         binding.btnSendCode.background = ContextCompat.getDrawable(requireContext(), R.drawable.bg_primary_radius)
                         binding.btnVerifyCode.isEnabled = false
